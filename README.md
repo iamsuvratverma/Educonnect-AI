@@ -10,7 +10,7 @@ Frontend - Html,css,Bootstarp
 Libraries - Pytorch,opencv ,Numpy, Pillow, matplotlib,transformers
 others - Transfomers,easyocr,Websocket.io
 
-#Excute commands :-
+# Excute commands :-
 1.create venv for bettr practice 
 2.Install all Libraries and dependencies
 3.Run app.py 
