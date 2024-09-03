@@ -11,6 +11,6 @@ Libraries - Pytorch,opencv ,Numpy, Pillow, matplotlib,transformers
 others - Transfomers,easyocr,Websocket.io
 
 # Excute commands :-
-**1.create venv for better practice**
+1.create venv for better practice
 2.Install all Libraries and dependencies
 3.Run app.py 
