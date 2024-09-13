@@ -1,0 +1,279 @@
+
+  
+  /* Extracted Text Styles */
+  #extractedText {
+    font-size: 18px;
+    color: #212529; /* Dark color for readability */
+    margin-top: 10px;
+    text-align: left;
+    font-weight: 500; /* Medium weight for emphasis */
+    overflow-y: auto; /* Scroll if content is too long */
+    max-height: 300px; /* Adjust height as needed */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .box {
+      margin-bottom: 30px;
+    }
+  
+    .form-card {
+      margin: 0 15px;
+    }
+  }
+  
+  /* Service Box Styles */
+  :root {
+    --main-color: #269ACC;
+  }
+  
+  .demo {
+    background-color: #eee;
+  }
+  
+  .serviceBox {
+    color: #fff;
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 40px 0 20px;
+    border-radius: 25px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.3);
+    width: 100%; /* Full width for responsiveness */
+    max-width: 700px; /* Maximum width to maintain design */
+    height: 454px; /* Flexible height */
+    margin: 20px auto;
+    position: relative;/* Ensure positioning for pseudo-elements */
+    
+  }
+  
+  .serviceBox .title {
+    color: #fff;
+    background: var(--main-color);
+    font-size: 20px;
+    font-weight: 300;
+    text-transform: capitalize;
+    padding: 10px 15px;
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.4);
+    position: relative;
+    margin: 0 0 20px;
+  }
+  
+  .serviceBox .title:before {
+    content: "";
+    background: var(--main-color);
+    border-radius: 25px 5px 5px 25px;
+    position: absolute;
+    top: -10px;
+    left: -7px;
+    bottom: -10px;
+    right: 100%;
+    z-index: -1; /* Ensure it’s behind the title */
+  }
+  
+  .serviceBox .service-icon {
+    color: var(--main-color);
+    font-size: 30px;
+    line-height: 55px;
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    border: 2px solid var(--main-color);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .serviceBox .service-icon:before {
+    content: "";
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    z-index: -1;
+  }
+  
+  .serviceBox .description {
+    color: #888;
+    font-size: 14px;
+    line-height: 25px;
+    margin: 0 25px;
+    overflow-y: auto; /* Scroll if content is too long */
+    max-height: 200px; /* Adjust height as needed */
+  }
+  
+  .serviceBox.blue {
+    --main-color: #1b2477; /* Update blue color */
+    border: 2px solid var(--main-color); /* Add border to emphasize blue design */
+  }
+  
+  @media only screen and (max-width: 1199px) {
+    .serviceBox {
+      margin: 0 0 30px;
+    }
+  }
+  
+  /* Image Container Styles */
+/* Image Container Styles */
+#uploadedFilePreview {
+    width: 98%;
+    overflow: auto;
+    max-height: 228px; /* or 90% */
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+}
+  
+#uploadedFilePreview img {
+    margin-left: 10px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain; /* Add this rule */
+}
+
+  .start{
+    border: 1px solid blue;
+    background-color:var(--main-color);
+    color: white;
+  }
+
+
+  @media (max-width: 768px) {
+    .serviceBox {
+      height: 400px; /* Adjust height for smaller screens */
+      padding: 20px 0 10px; /* Reduce padding for smaller screens */
+      max-width: 100%; /* Full width on mobile */
+      margin-left: 0; /* Centered margin */
+      margin-right: 0; /* Centered margin */
+    }
+  
+    #uploadedFilePreview {
+      height: 190px;
+      width: auto; /* Reduce height for smaller screens */
+    }
+  
+    .box {
+      margin-bottom: 30px; /* Space between boxes */
+    }
+  
+    .form-card {
+      margin: 0 15px; /* Margin for form cards */
+    }
+  }
+  
+  /* Responsive Design for Medium Screens */
+  @media only screen and (max-width: 1199px) {
+    .serviceBox {
+      margin: 0 0 30px; /* Add spacing between service boxes */
+    }
+  }
+  
+  /* From Uiverse.io by G4b413l */ 
+.three-body {
+  --uib-size: 45px;
+  --uib-speed: 0.8s;
+  --uib-color: #5D3FD3;
+  position: relative;
+  top: 125px;
+  display: inline-block;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+ }
+ 
+ .three-body__dot {
+  position: absolute;
+  height: 100%;
+  width: 30%;
+ }
+ 
+ .three-body__dot:after {
+  content: '';
+  position: absolute;
+  height: 0%;
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: var(--uib-color);
+  border-radius: 50%;
+ }
+ 
+ .three-body__dot:nth-child(1) {
+  bottom: 5%;
+  left: 0;
+  transform: rotate(60deg);
+  transform-origin: 50% 85%;
+ }
+ 
+ .three-body__dot:nth-child(1)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite ease-in-out;
+  animation-delay: calc(var(--uib-speed) * -0.3);
+ }
+ 
+ .three-body__dot:nth-child(2) {
+  bottom: 5%;
+  right: 0;
+  transform: rotate(-60deg);
+  transform-origin: 50% 85%;
+ }
+ 
+ .three-body__dot:nth-child(2)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite
+     calc(var(--uib-speed) * -0.15) ease-in-out;
+ }
+ 
+ .three-body__dot:nth-child(3) {
+  bottom: -5%;
+  left: 0;
+  transform: translateX(116.666%);
+ }
+ 
+ .three-body__dot:nth-child(3)::after {
+  top: 0;
+  left: 0;
+  animation: wobble2 var(--uib-speed) infinite ease-in-out;
+ }
+ 
+ @keyframes spin78236 {
+  0% {
+   transform: rotate(0deg);
+  }
+ 
+  100% {
+   transform: rotate(360deg);
+  }
+ }
+ 
+ @keyframes wobble1 {
+  0%,
+   100% {
+   transform: translateY(0%) scale(1);
+   opacity: 1;
+  }
+ 
+  50% {
+   transform: translateY(-66%) scale(0.65);
+   opacity: 0.8;
+  }
+ }
+ 
+ @keyframes wobble2 {
+  0%,
+   100% {
+   transform: translateY(0%) scale(1);
+   opacity: 1;
+  }
+ 
+  50% {
+   transform: translateY(66%) scale(0.65);
+   opacity: 0.8;
+  }
+ }
+ 
