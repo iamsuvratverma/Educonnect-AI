@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='img/nn.png') }}" rel="icon">
+    <title>Educonnect.AI</title>
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+    <style>
+    </style>
+    
+</head>
+
+<body>
+    <!-- Video Background Section -->
+    <div class="video-background">
+        <video autoplay muted loop id="background-video">
+            <source src="{{ url_for('static', filename='img/ai1.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Header Section -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <h1 class="text-white glow-blue">EduConnect.</h1>
+
+            </nav>
+        </div>
+    </div>
+
+    <!-- Signup Form Section -->
+    <div class="wrapper" style="padding-bottom: 2.5%;">
+        <div class="msg">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                <div class="flash-message {{ message[1] }}">
+                    *{{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <form action="/createaccount" class="form_main" method="POST">
+            <h2>Signup</h2>
+            <div class="input-field">
+                <input type="text" id="username" name="username" required>
+                <label>Enter your username</label>
+            </div>
+            <div class="input-field">
+                <input type="email" id="email" name="email" required>
+                <label>Enter your email</label>
+            </div>
+            <div class="input-field">
+                <input type="password" class="inputField" id="password" name="password" required>
+                <label>Enter your password</label>
+            </div>
+            <button type="submit">Signup</button>
+            <div class="register">
+                <p>You have already an account? <a href="/">Login</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

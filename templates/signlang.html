@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     
+
+    <meta charset="utf-8">
+    <title>EduConnect AI</title>
+
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+    <link href="{{ url_for('static', filename='img/nn.png') }}" rel="icon">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- Libraries Stylesheet -->
+<link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+
+
+   <!-- Customized Bootstrap Stylesheet -->
+   <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <a href="/index" class="navbar-brand">
+                    <h1 class="text-white">EduConnect<span class="text-dark">.</span>AI</h1>
+                </a>
+                <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <a href="/index" class="nav-item nav-link active">Home</a>
+                        <a href="/about" class="nav-item nav-link">About</a>
+                        <!-- <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="project.html" class="nav-item nav-link">Projects</a> -->
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/signlang" class="dropdown-item">Sign Language Conversion</a>
+                                <a href="/textext" class="dropdown-item">Text Extraction</a>
+                                <a href="/equation" class="dropdown-item">Handwritten Equation Solver</a>
+                                <a href="/textsum" class="dropdown-item">Text Summarization</a>
+
+                            </div>
+                        </div>
+                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                        <div class="nav-item dropdown username" >
+                            {% if session['username'] %}
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-user"></i>
+                                Welcome, {{ session['username'] }}
+                            </a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                            {% else %}
+                            <a href="/login" class="nav-link">Please log in</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                   
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Hero Start -->
+    <div class="container-fluid pt-5 bg-primary hero-header">
+        <div class="container pt-5">
+            <div class="row g-5 pt-5">
+                <div class="col-lg-6 align-self-center text-center text-lg-start mb-lg-5">
+                    <h1 class="display-4 text-white mb-4 animated slideInRight">Sign Language To Text Conversion</h1>
+                    <!-- <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center justify-content-lg-start mb-0">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Features</li>
+                        </ol>
+                    </nav> -->
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-end">
+                    <!-- <img class="img-fluid" src="{{ url_for('static', filename='img/hero-img.png') }}" alt="" style="max-height: 300px;"> -->
+                    <!-- <img class="img-fluid" src="{{ url_for('static', filename='img/gif.gif') }}" alt=""> -->
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/d.png') }}" alt="" width="90%"> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+
+    <!-- Full Screen Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content" style="background: rgba(20, 24, 62, 0.7);">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn btn-square bg-white btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <div class="input-group" style="max-width: 600px;">
+                        <input type="text" class="form-control bg-transparent border-light p-3"
+                            placeholder="Type search keyword">
+                        <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Full Screen Search End -->
+
+
+    <!-- Feature Start -->
+    <div class="container-fluid bg-dark feature pt-5">
+        <div class="container pt-5">
+            <div class="row g-5">
+                <div class="col-lg-6 align-self-center mb-md-5 pb-md-5 wow fadeIn" data-wow-delay="0.3s">
+                    <div class="btn btn-sm border rounded-pill text-white px-3 mb-3">About ASL</div>
+                    <h1 class="text-white mb-4">Bridging Communication with Sign Language to Text</h1>
+                    <p class="text-light mb-4">Our Sign Language to Text Conversion tool bridges communication gaps by translating American Sign Language (ASL) gestures into written text in real-time. This innovative feature empowers individuals who use ASL to communicate more effectively in educational and professional settings. By converting gestures into readable text, our tool ensures that Deaf and hard-of-hearing individuals have equal access to information and can participate fully in conversations and learning environments. This project is a step forward in making communication more inclusive and accessible for everyone.</p>
+                    <!-- <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Diam dolor diam ipsum et tempor sit</span>
+                    </div>
+                    <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Diam dolor diam ipsum et tempor sit</span>
+                    </div>
+                    <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Diam dolor diam ipsum et tempor sit</span>
+                    </div> -->
+                    <div class="row g-4 pt-3">
+                        <!-- <div class="col-sm-6">
+                            <div class="d-flex rounded p-3" style="background: rgba(256, 256, 256, 0.1);">
+                                <i class="fa fa-home fa-3x text-white"></i>
+                                <div class="ms-3">
+                                    <h2 class="text-white mb-0" data-toggle="counter-up">9999</h2>
+                                    <p class="text-white mb-0">Happy Clients</p>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-sm-6">
+                            <div class="d-flex rounded p-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-md-end wow fadeIn" data-wow-delay="0.5s">
+                    <!-- <img class="img-fluid" src="{{ url_for('static', filename='img/gif.gif') }}" alt="" style="width: 100%; max-width: 500px;"> -->
+                    <img class="img-fluid" src="{{ url_for('static', filename='gif/vedio3.gif') }}" alt="" style="width: 100%; max-width: 700px; height: 500px; object-fit: cover;">
+
+                </div>
+                </div>
+                
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Feature End -->
+
+
+    <!-- Newsletter Start -->
+    <div class="container-fluid bg-primary newsletter py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-md-5 ps-lg-0 pt-5 pt-md-0 text-start wow fadeIn" data-wow-delay="0.3s">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/newsletter.png') }}" alt="">
+
+                </div>
+                <div class="col-md-7 py-5 newsletter-text wow fadeIn" data-wow-delay="0.5s">
+                    <div class="btn btn-lg border rounded-pill text-white px-3 mb-3">Tips for better predictions</div>
+                    <!-- <h1 class="text-white mb-4">Let's subscribe the newsletter</h1> -->
+                    <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Make sure you have a plain background.</span>
+                    </div>
+                    <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Your hands should not shake more.</span>
+                    </div>
+                    <div class="d-flex align-items-center text-white mb-3">
+                        <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <span>Hold your hand steady.</span>
+                    </div>
+                    <div class="position-relative w-100 mt-3 mb-2">
+                    
+                            <a href="/outputsign" class="btn btn-outline-dark py-sm-3 px-sm-5 rounded-pill animated slideInRight" style="font-size: 1rem;"> START <i class="fas fa-arrow-right" style="font-size: 1rem;"></i>
+                            </a>
+                            
+                        <!-- <button type="button" class="btn shadow-none position-absolute top-0 end-0 mt-1 me-2"> -->
+                                <!-- <i class="fa fa-paper-plane text-primary fs-4"></i></button> -->
+                    </div>
+                    <!-- <small class="text-white-50">Diam sed sed dolor stet amet eirmod</small> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Newsletter End -->
+
+
+ <!-- Footer Start -->
+ <div class="container-fluid bg-dark text-white-50 footer pt-5">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
+                <a href="index.html" class="d-inline-block mb-3">
+                    <h1 class="text-white">EduConnect<span class="text-primary">.</span>AI</h1>
+                </a>
+                <p class="mb-0">AI platform is designed to help all students, including specially abled persons, by
+                    automating tasks and making education more accessible.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
+                <h5 class="text-white mb-4">Get In Touch</h5>
+                <p><i class="fa fa-map-marker-alt me-3"></i>Nsti Jodhpur,Rajasthan</p>
+                <p><i class="fa fa-phone-alt me-3"></i>+916393596233</p>
+                <p><i class="fa fa-envelope me-3"></i>educonnect@gmail.com</p>
+                <div class="d-flex pt-2">
+                    <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
+                <h5 class="text-white mb-4">Popular Link</h5>
+                <a class="btn btn-link" href="">About Us</a>
+                <a class="btn btn-link" href="">Contact Us</a>
+                <a class="btn btn-link" href="">Services</a>
+            </div>
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
+                <h5 class="text-white mb-4">Our Services</h5>
+                <a class="btn btn-link" href="">Sign Language to Text Conversion</a>
+                <a class="btn btn-link" href="">Handwritten Equation Solver</a>
+                <a class="btn btn-link" href="">Text Summarization</a>
+                <a class="btn btn-link" href="">Text Extraction</a>
+            </div>
+        </div>
+    </div>
+    <div class="container wow fadeIn" data-wow-delay="0.1s">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="border-bottom" href="#">EduConnect.AI</a>, All Right Reserved.
+
+                   
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="footer-menu">
+                        <a href="/">Home</a>
+                        <a href="/about">About</a>
+                        <a href="/contact">Help</a>
+                        <!-- <a href="">FAQs</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
+
+
+  
+ <!-- JavaScript Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/counterup/counterup.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+
+<!-- Template Javascript -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

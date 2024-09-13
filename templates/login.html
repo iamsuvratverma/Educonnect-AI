@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='img/nn.png') }}" rel="icon">
+    <title>Educonnect.AI</title>
+    <link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Video Background Section -->
+    <div class="video-background">
+        <video autoplay muted loop id="background-video">
+            <source src="{{ url_for('static', filename='img/ai1.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Header Section -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <h1 class="text-white glow-blue">EduConnect.</h1>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Login Form Section -->
+    <div class="wrapper" style="padding-bottom: 3%;">
+        <div class="msg">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                <div class="flash-message {{ message[1] }}">
+                    *{{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+        <form action="/login_account" class="form_main" method="POST">
+            <h2>Login</h2>
+            <div class="input-field">
+                <input type="text" id="username" name="username" required>
+                <label>Enter username</label>
+            </div>
+            <div class="input-field">
+                <input type="password" class="inputField" id="password" name="password" required>
+                <label>Enter your password</label>
+            </div>
+            <button type="submit">Login</button>
+            <div class="register">
+                <p>Don't have an account? <a href="/signup">Signup</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

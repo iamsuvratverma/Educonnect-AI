@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <meta charset="utf-8">
+    <title>Educonnect.AI</title>
+
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+    <link href="{{ url_for('static', filename='img/nn.png') }}" rel="icon">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    
+    
+    
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/cmp.css') }}" rel="stylesheet">
+    <!-- Template Stylesheet -->
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <a href="/index" class="navbar-brand">
+                    <h1 class="text-white">EduConnect<span class="text-dark">.</span>AI</h1>
+                </a>
+                <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <a href="/index" class="nav-item nav-link active">Home</a>
+                        <a href="/about" class="nav-item nav-link">About</a>
+                        <!-- <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="project.html" class="nav-item nav-link">Projects</a> -->
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/signlang" class="dropdown-item">Sign Language Conversion</a>
+                                <a href="/textext" class="dropdown-item">Text Extraction</a>
+                                <a href="/equation" class="dropdown-item">Handwritten Equation Solver</a>
+                                <a href="/textsum" class="dropdown-item">Text Summarization</a>
+                            </div>
+                        </div>
+                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                        <div class="nav-item dropdown username" >
+                            {% if session['username'] %}
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-user"></i>
+                                Welcome, {{ session['username'] }}
+                            </a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                            {% else %}
+                            <a href="/login" class="nav-link">Please log in</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                  
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Hero Start -->
+    <div class="container-fluid pt-5 bg-primary hero-header">
+        <div class="container pt-5">
+            <div class="row g-5 pt-5">
+                <div class="col-lg-6 align-self-center text-center text-lg-start mb-lg-5">
+                    <h1 class="display-4 text-white mb-4 animated slideInRight">Computerized Text Extraction</h1>
+                    <!-- <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center justify-content-lg-start mb-0">
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">FAQs</li>
+                        </ol>
+                    </nav> -->
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-end">
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/cmpr.png') }}" alt="" style="max-width: 600px; ">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+
+    <!-- Full Screen Search Start -->
+    <div class="modal fade" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content" style="background: rgba(20, 24, 62, 0.7);">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn btn-square bg-white btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    <div class="input-group" style="max-width: 600px;">
+                        <input type="text" class="form-control bg-transparent border-light p-3"
+                            placeholder="Type search keyword">
+                        <button class="btn btn-light px-4"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Full Screen Search End -->
+
+    <!-- Feature Start -->
+    <div class="container-fluid bg-dark feature pt-5">
+        <div class="container pt-5">
+            <div class="row g-5">
+                <div class="col-lg-6 align-self-center mb-md-5 pb-md-5 wow fadeIn" data-wow-delay="0.3s">
+                    <div class="btn btn-sm border rounded-pill text-white px-3 mb-3">About </div>
+                    <h1 class="text-white mb-4"> Transforming Computerized text into Editable Format</h1>
+                    <p class="text-light mb-4">A computerized text extraction system is an advanced AI-driven technology designed to interpret and digitize printed text. Using sophisticated algorithms, this system converts images of printed text into editable digital formats, making the content easily accessible and usable. </p>
+                    <!-- <div class="d-flex align-items-center text-white mb-3">
+                    <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <span>Diam dolor diam ipsum et tempor sit</span>
+                </div>
+                <div class="d-flex align-items-center text-white mb-3">
+                    <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <span>Diam dolor diam ipsum et tempor sit</span>
+                </div>
+                <div class="d-flex align-items-center text-white mb-3">
+                    <div class="btn-sm-square bg-white text-primary rounded-circle me-3">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <span>Diam dolor diam ipsum et tempor sit</span>
+                </div> -->
+                    <div class="row g-4 pt-3">
+                        <!-- <div class="col-sm-6">
+                        <div class="d-flex rounded p-3" style="background: rgba(256, 256, 256, 0.1);">
+                            <i class="fa fa-home fa-3x text-white"></i>
+                            <div class="ms-3">
+                                <h2 class="text-white mb-0" data-toggle="counter-up">9999</h2>
+                                <p class="text-white mb-0">Happy Clients</p>
+                            </div>
+                        </div>
+                    </div> -->
+                        <div class="col-sm-6">
+                            <div class="d-flex rounded p-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-md-end wow fadeIn" data-wow-delay="0.5s">
+                    <!-- <img class="img-fluid" src="{{ url_for('static', filename='img/gif.gif') }}" alt="" style="width: 100%; max-width: 500px;"> -->
+                    <img class="img-fluid"
+                        src="https://etimg.etb2bimg.com/photo/106669815.cms"
+                        alt=""
+                        style=" width: 800px; height: 500px; object-fit: cover; margin-bottom: 60px;">
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Feature End -->
+
+
+    <!-- FAQs Start -->
+
+
+    <!-- Newsletter Start -->
+    <div class="container-fluid bg-primary newsletter py-5">
+        <div class="d-flex justify-content-center">
+            <div class="btn btn-sm border rounded-pill text-white px-3 mb-4" style="font-size: 16px;">Computer-Text Recognizer</div>
+        </div>
+        <div class="container">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="serviceBox blue">
+                            <h3 class="title">Input Area</h3>
+                            <!-- Upload Form -->
+                            <form id="uploadForm" enctype="multipart/form-data">
+                                <label for="fileInput" class="custom-file-upload service-icon">
+                                    <i class="fa fa-upload"></i>
+                                </label>
+                                <input type="file" id="fileInput" name="file" accept="image/*" required
+                                    style="display: none;" />
+                                <input type="submit" value="Start" class="btn start ml-2"/>
+                            </form>
+                            <div id="uploadedFilePreview" class="image-container">
+                                <!-- The image will be injected here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Box 2: Extracted Text -->
+                    <div class="col-md-6 col-sm-12" ">
+                        <div class="serviceBox blue " style="margin-left: 20px;" >
+                            <h3 class="title">Extracted Text</h3>
+                            <div id="extractedText" class="description">
+                                <!-- Placeholder for extracted text -->
+                                <p></p>
+                            </div>
+                            <div id="loader" style="display: none;">
+                                <!-- Hidden by default loader -->
+                                <div class="three-body">
+                                    <div class="three-body__dot"></div>
+                                    <div class="three-body__dot"></div>
+                                    <div class="three-body__dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
+                    <a href="index.html" class="d-inline-block mb-3">
+                        <h1 class="text-white">EduConnect<span class="text-primary">.</span>AI</h1>
+                    </a>
+                    <p class="mb-0">AI platform is designed to help all students, including specially abled persons, by
+                        automating tasks and making education more accessible.</p>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
+                    <h5 class="text-white mb-4">Get In Touch</h5>
+                    <p><i class="fa fa-map-marker-alt me-3"></i>Nsti Jodhpur,Rajasthan</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>+916393596233</p>
+                    <p><i class="fa fa-envelope me-3"></i>educonnect@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
+                    <h5 class="text-white mb-4">Popular Link</h5>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Services</a>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
+                    <h5 class="text-white mb-4">Our Services</h5>
+                    <a class="btn btn-link" href="">Sign Language to Text Conversion</a>
+                    <a class="btn btn-link" href="">Handwritten Equation Solver</a>
+                    <a class="btn btn-link" href="">Text Summarization</a>
+                    <a class="btn btn-link" href="">Text Extraction</a>
+                </div>
+            </div>
+        </div>
+        <div class="container wow fadeIn" data-wow-delay="0.1s">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">EduConnect.AI</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="/">Home</a>
+                            <a href="/about">About</a>
+                            <a href="/contact">Help</a>
+                            <!-- <a href="">FAQs</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0]; // Get the selected file
+            if (file) { // Check if a file is selected
+                const reader = new FileReader(); // Create a new FileReader object
+                reader.onload = function (e) {
+                    // Set the image src to the file's data URL and display it
+                    document.getElementById('uploadedFilePreview').innerHTML = `<img src="${e.target.result}" class="card-img card-img-top" alt="Uploaded Image">`;
+                }; -
+                    reader.readAsDataURL(file); // Read the file as a data URL
+            }
+        });
+    </script>
+
+
+    <!-- <script>
+        document.getElementById('uploadForm').onsubmit = async function (e) {
+            e.preventDefault();  // Prevent the default form submission
+
+            const loader = document.getElementById('loader');
+            const extractedTextElement = document.getElementById('extractedText');
+
+            loader.style.display = 'block'; // Show loader
+
+            const formData = new FormData(this);
+            try {
+                const response = await fetch('/computertext', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+
+                const result = await response.json();
+
+                console.log('Result from server:', result);
+
+                // Clear any existing text
+                extractedTextElement.textContent = "";
+
+                if (!result.extracted_text || result.extracted_text.trim().length === 0) {
+                    extractedTextElement.textContent = "No text found.";
+                    return;
+                }
+
+                // Split the text into words while preserving original spacing
+                const words = result.extracted_text.split(/(?:\s|&nbsp;|&#160;|[\u2000-\u200F\u202F\u205F\u3000\uFEFF])/);
+                console.log('Words to display:', words);
+
+                let index = 0;
+                const delay = 70; // adjust the delay as needed (in milliseconds)
+
+                function displayNextWord() {
+                    if (index < words.length) {
+                        extractedTextElement.textContent += words[index] + " ";
+                        index++;
+                        setTimeout(displayNextWord, delay);
+                    }
+                }
+
+                displayNextWord();
+            } catch (error) {
+                console.error('Error:', error);
+                extractedTextElement.textContent = "An error occurred.";
+            } finally {
+                loader.style.display = 'none'; // Hide loader
+            }
+        };
+    </script>  -->
+
+
+
+
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var loader = document.getElementById('loader');
+            var extractedTextElement = document.getElementById('extractedText');
+
+            // Show the loader
+            loader.style.display = 'block';
+
+            // Clear previous results
+            extractedTextElement.textContent = "";
+
+            var formData = new FormData(this);
+
+            fetch('/computertext', { // Your Flask route
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response from the server
+                    extractedTextElement.textContent = data.extracted_text || "No text found."; // Display result in pre element
+
+                    // Hide the loader
+                    loader.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Hide the loader in case of error
+                    loader.style.display = 'none';
+                });
+        });
+
+        // Clear previous results when a new file is selected
+        document.getElementById('fileInput').addEventListener('change', function () {
+            var extractedTextElement = document.getElementById('extractedText');
+            var loader = document.getElementById('loader');
+
+            // Clear previous result and hide loader
+            extractedTextElement.textContent = "";
+            loader.style.display = 'none';
+        });
+    </script>
+
+
+
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

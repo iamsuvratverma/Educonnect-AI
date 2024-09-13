@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>EduConnect AI</title>
+    <link href="{{ url_for('static', filename='img/nn.png') }}" rel="icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="{{url_for('static', filename='opencv.js')}}" type="text/javascript"></script>
+    <!-- Favicon -->
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+    <script src="https://kit.fontawesome.com/13deb536c6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Ubuntu:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/my.css') }}" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <script>
+        $(window).scroll(function () {
+            var scroll = $(window).scrollTop();
+            if (scroll > 30) {
+                $("#header").addClass("active");
+            }
+            else {
+                $("#header").removeClass("active");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            setInterval(newTip, 10000);
+
+        });
+
+
+        async function newTip() {
+            var tip_element = document.getElementById("tips");
+            var currentTip = allTips[Math.floor(Math.random() * allTips.length)];
+            tip_element.classList.add('fade-out');
+            await sleep(900);
+            tip_element.innerHTML = currentTip;
+            tip_element.classList.remove('fade-out');
+            tip_element.classList.add('fade-in');
+        }
+
+        const sleep = async (milliseconds) => {
+            await new Promise(resolve => {
+                return setTimeout(resolve, milliseconds)
+            });
+        };
+    </script>
+
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+
+    <!-- Navbar Start -->
+    <div class="container-fluid sticky-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                <a href="/index" class="navbar-brand">
+                    <h1 class="text-white">EduConnect<span class="text-dark">.</span>AI</h1>
+                </a>
+                <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto">
+                        <a href="/index" class="nav-item nav-link active">Home</a>
+                        <a href="/about" class="nav-item nav-link">About</a>
+                        <!-- <a href="service.html" class="nav-item nav-link">Services</a>
+                        <a href="project.html" class="nav-item nav-link">Projects</a> -->
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Services</a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/signlang" class="dropdown-item">Sign Language Conversion</a>
+                                <a href="/textext" class="dropdown-item">Text Extraction</a>
+                                <a href="/equation" class="dropdown-item">Handwritten Equation Solver</a>
+                                <a href="/textsum" class="dropdown-item">Text Summarization</a>
+                            </div>
+                        </div>
+                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                        <div class="nav-item dropdown username">
+                            {% if session['username'] %}
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-user"></i>
+                                Welcome, {{ session['username'] }}
+                            </a>
+                            <div class="dropdown-menu bg-light mt-2">
+                                <a href="/logout" class="dropdown-item">Logout</a>
+                            </div>
+                            {% else %}
+                            <a href="/login" class="nav-link">Please log in</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+
+    <!-- Hero Start -->
+    <div class="container-fluid pt-5 bg-primary hero-header">
+        <div class="container pt-5">
+            <div class="row g-5 pt-5">
+                <div class="col-lg-6 align-self-center text-center text-lg-start mb-lg-5">
+                    <h1 class="display-4 text-white mb-4 animated slideInRight">Sign Language To Text Conversion</h1>
+
+                </div>
+                <div class="col-lg-6 align-self-end text-center text-lg-end">
+
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/newrobo.png') }}" alt=""
+                        width="100%">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+
+
+    <!-- Feature Start -->
+    <div class="container-fluid bg-dark feature ">
+        <div class="container pt-5">
+            <div class="row g-5">
+                <div class="col-lg-6 align-self-center mb-md-5 pb-md-5 wow fadeIn" data-wow-delay="0.3s">
+                    <div class="btn btn-sm border rounded-pill text-white px-3 mb-3">About ASL</div>
+                    <h1 class="text-white mb-4">ASL Alphabet</h1>
+                    <p class="text-light mb-4">American Sign Language (ASL) is a natural language that serves as the
+                        predominant sign language of deaf communities in the United States and most of Anglophone
+                        Canada. ASL is a complete and organized visual language that is expressed by employing both
+                        manual and nonmanual features.</p>
+                </div>
+                <div class="col-lg-6 " data-wow-delay="0.5s">
+                    <!-- <img class="img-fluid" src="{{ url_for('static', filename='img/gif.gif') }}" alt="" style="width: 100%; max-width: 500px;"> -->
+                    <img class="img-fluid" src="{{ url_for('static', filename='img/ASLchart.png') }}" alt="">
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- Feature End -->
+
+
+    <!-- Newsletter Start -->
+    <div class="container-fluid bg-primary newsletter py-3">
+        <div class="container">
+            <div class="d-flex justify-content-center">
+                <div class="btn btn-sm border rounded-pill text-white px-3 mt-5">Sign Language Conversion</div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <!-- Camera Section (Left Side) -->
+                <div class="col-lg-6">
+                    <div class="camera-part">
+                        <!-- Video and Canvas for Camera -->
+                        <video autoplay="true" id="videoElement" style="display:none;"></video>
+                        <canvas id="canvasOutput" style="transform:scaleX(-1); "></canvas>
+
+                        <div class="prediction" style="margin-left: 20%;">
+                            <div class="row">
+                                <div class="col " style="color: black;">
+                                    <p id="live-letter"></p>
+                                </div>
+                                <div class="col n_sh">
+                                    <p id="confidence"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal Section (Right Side) -->
+                <div class="col-lg-6">
+                    <div class="card1 text-window" style="width: 70%;">
+                        <div class="range-slider-container" id="settings">
+                            <h3>Detection</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="car" class="form-label"
+                                        title="Takes consecutive detection of same character as one. Recommended : 5">Consecutive
+                                        Acceptance Rate :</label>
+                                    <span id="car-value">5</span>
+                                </div>
+                                <div class="col-md">
+                                    <input type="range" class="form-range" min="3" max="7" value="5" step="1" id="car"
+                                        title="Takes consecutive detection of same character as one. Recommended : 5" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="threshold" class="form-label"
+                                        title="The detection confidence in percentage after which a character is displayed on the console. Recommended : 90%">Acceptance
+                                        Threshold :</label>
+                                    <span id="threshold-value">90%</span>
+                                </div>
+                                <div class="col-md">
+                                    <input type="range" class="form-range" min="88" max="100" value="90" step="1"
+                                        id="threshold"
+                                        title="The detection confidence in percentage after which a character is displayed on the console. Recommended : 90%" />
+                                </div>
+                            </div>
+                            <br>
+                            <h3>Text to Speech</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="voiceSelect" class="form-label"
+                                        title="Select your desired speaker voice.">Speech Voices</label>
+                                </div>
+                                <div class="col-md">
+                                    <select id="voiceSelect" class="form-select"
+                                        title="Select your desired speaker voice."></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="rate" class="form-label"
+                                        title="How fast the speaker talks. Recommended : 1">Rate of Speech :</label>
+                                    <span id="rate-value">1</span>
+                                </div>
+                                <div class="col-md">
+                                    <input type="range" class="form-range" min="0" max="2" value="1" step="0.1"
+                                        id="rate" title="How fast the speaker talks. Recommended : 1" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="title-bar">
+                            <!-- <i class="fa-solid fa-gear fa-lg" onclick="Settings(this)" title="Click for settings"></i> -->
+                            <p class="align-middle">Text Area</p>
+                            <div class="button-green" onclick="ShowBackend()" title="Click to see Backend Preview">
+                            </div>
+                            <div class="button-red" onclick="RecordButton()" title="Click to turn off camera"></div>
+                        </div>
+
+
+                        <textarea class="interpreted-text" id="interpreted-text" rows=10
+                            placeholder="Detected Alphabets"></textarea>
+                    </div>
+
+                    <div class="button-container">
+                        <div class="row" style="margin-left: 80px;">
+                            <div class="col">
+                                <!-- Play Button -->
+                                <button id="speak" type="button" class="styled-button play-button">
+                                    <i class="fa-solid fa-play"></i>&nbsp;&nbsp;Play
+                                </button>
+                                <!-- Stop Button -->
+                                <button id="stop-audio" type="button" class="styled-button stop-button">
+                                    &nbsp;<i class="fa-solid fa-square"></i>&nbsp;
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="black-button" id="delete" onclick="DeleteText()">
+                                    &nbsp;<i class="fa-solid fa-delete-left fa-xl"></i>&nbsp;
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mx-auto preview-container" id="preview-container">
+                            <h2>Backend Preview</h2>
+                            <img id="preview" class="img-fluid">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white-50 footer pt-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
+                    <a href="index.html" class="d-inline-block mb-3">
+                        <h1 class="text-white">EduConnect<span class="text-primary">.</span>AI</h1>
+                    </a>
+                    <p class="mb-0">AI platform is designed to help all students, including specially abled persons, by
+                        automating tasks and making education more accessible.</p>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
+                    <h5 class="text-white mb-4">Get In Touch</h5>
+                    <p><i class="fa fa-map-marker-alt me-3"></i>Nsti Jodhpur,Rajasthan</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>+916393596233</p>
+                    <p><i class="fa fa-envelope me-3"></i>educonnect@gmail.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
+                    <h5 class="text-white mb-4">Popular Link</h5>
+                    <a class="btn btn-link" href="">About Us</a>
+                    <a class="btn btn-link" href="">Contact Us</a>
+                    <a class="btn btn-link" href="">Services</a>
+                </div>
+                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
+                    <h5 class="text-white mb-4">Our Services</h5>
+                    <a class="btn btn-link" href="">Sign Language to Text Conversion</a>
+                    <a class="btn btn-link" href="">Handwritten Equation Solver</a>
+                    <a class="btn btn-link" href="">Text Summarization</a>
+                    <a class="btn btn-link" href="">Text Extraction</a>
+                </div>
+            </div>
+        </div>
+        <div class="container wow fadeIn" data-wow-delay="0.1s">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">EduConnect.AI</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="/">Home</a>
+                            <a href="/about">About</a>
+                            <a href="/contact">Help</a>
+                            <!-- <a href="">FAQs</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top pt-2"><i class="bi bi-arrow-up"></i></a>
+
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='lib/wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/owlcarousel/owl.carousel.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+
+    <script src="{{url_for('static', filename='connection.js')}}" type="text/javascript"></script>
+
+    <script>
+
+        //Settings toggle
+        function Settings(e) {
+            var settings = document.getElementById('settings');
+            if (settings.style.display == 'none' || settings.style.display == '') {
+                e.style.transform = 'rotate(20deg)';
+                settings.style.display = 'block';
+            }
+            else {
+                e.style.transform = 'rotate(-20deg)';
+                settings.style.display = 'none';
+            }
+        }
+
+
+
+    </script>
+
+    <script>
+        //Text to Speech
+        let synth = window.speechSynthesis;
+        var speak_button = document.getElementById("speak");
+        var delete_button = document.getElementById("delete");
+        var stop_audio = document.getElementById("stop-audio");
+        var rate = document.getElementById("rate");
+        var pitch = document.getElementById("pitch");
+        var voice_option = document.getElementById("voiceSelect");
+
+
+        rate.addEventListener("change", function () {
+            document.getElementById("rate-value").innerHTML = rate.value;
+        });
+
+        //Start Speech
+        speak_button.addEventListener("click", () => {
+
+            const utterance = new SpeechSynthesisUtterance(document.getElementById("interpreted-text").value);
+            utterance.rate = rate.value;
+            const voices = speechSynthesis.getVoices();
+
+            utterance.voice = voices[voice_option.selectedIndex];
+
+            stop_audio.style.display = "inline";
+            synth.speak(utterance);
+            const interval = setInterval(() => {
+                speak_button.innerHTML = '<i class="fa-solid fa-play fa-fade"></i>&nbsp;&nbsp;Playin...';
+
+                if (!synth.speaking) {
+                    clearInterval(interval);
+                    speak_button.innerHTML = '<i class="fa-solid fa-play"></i>&nbsp;&nbsp;Play';
+                    stop_audio.style.display = "none";
+
+                }
+            }, 100);
+
+        });
+
+        //End Speech
+        stop_audio.addEventListener("click", () => {
+            synth.cancel();
+        });
+
+        //Get available voices
+        function populateVoiceList() {
+            if (typeof speechSynthesis === "undefined") {
+                return;
+            }
+
+            const voices = speechSynthesis.getVoices();
+
+
+            for (let i = 0; i < voices.length; i++) {
+                const option = document.createElement("option");
+                option.textContent = `${voices[i].name} (${voices[i].lang})`;
+
+                if (voices[i].default) {
+                    option.textContent += " — DEFAULT";
+                }
+
+
+                option.setAttribute("data-lang", voices[i].lang);
+                option.setAttribute("data-name", i);
+                document.getElementById("voiceSelect").appendChild(option);
+            }
+        }
+
+        populateVoiceList();
+        if (
+            typeof speechSynthesis !== "undefined" &&
+            speechSynthesis.onvoiceschanged !== undefined
+        ) {
+            speechSynthesis.onvoiceschanged = populateVoiceList;
+        }
+
+
+        //Delete the text in the console window
+        function DeleteText() {
+            document.getElementById("interpreted-text").value = '';
+        }
+
+        //Toggle the Backend OpenCV view
+        function ShowBackend() {
+            var preview = document.getElementById("preview-container");
+
+            if (preview.style.display == '' || preview.style.display == 'none') {
+                preview.style.display = "block";
+                speak_button.scrollIntoView();
+            }
+            else {
+                preview.style.display = "none";
+            }
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
